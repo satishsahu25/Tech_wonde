@@ -34,16 +34,25 @@ const List = ({navigation}: Listprops): JSX.Element => {
   const [users, setusers] = useState<ItemProps[]>([]);
   const [filterusers, setfilterusers] = useState<ItemProps[]>([]);
   const [asc,setasc]= useState(false);
+  const [isloading,setisloading]=useState<boolean>(true);
+  const [error,seterror]=useState<String>('');
   const [searchquery, setsearchquery] = useState('');
 
   useEffect(() => {
-    fetch('https://run.mocky.io/v3/0bff210c-7fc8-4964-a555-8d93de3d5f17')
-      .then(response => {
+    const fetchpromise=fetch('https://run.mocky.io/v3/0bff210c-7fc8-4964-a555-8d93de3d5f17');
+    
+    fetchpromise.then(response => {
         return response.json();
       })
       .then(data => {
-        setusers(data);
+        if(data!=null){
+          setisloading(false);
+            setusers(data);
         setfilterusers(data);
+        }
+      
+      }).catch((err)=>{
+        throw err;
       });
   }, []);
 
@@ -119,7 +128,7 @@ const sortusers=()=>{
            </TouchableOpacity>
          
         </View>
-        <FlatList
+       {!isloading&&users?<FlatList
           data={filterusers}
           keyExtractor={(item:ItemProps) => item.index}
           renderItem={({item}) => (
@@ -143,7 +152,7 @@ const sortusers=()=>{
               </View>
             </Pressable>
           )}
-        />
+        />:<View><Text>No data found</Text></View>}
       </View>
     </SafeAreaView>
   );
