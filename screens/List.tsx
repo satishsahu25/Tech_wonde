@@ -81,13 +81,13 @@ const sortusers=()=>{
    if(asc){
   
     if(tempdata.length>0){
-    let result= tempdata.sort((a,b)=>a.firstname.localeCompare(b.firstname));
+    let result= tempdata.sort((a,b)=>a.firstname.concat(a.surname).localeCompare(b.firstname.concat(b.surname));
     setfilterusers(result);
     }
    }else{
     
     if(tempdata.length>0){
-    let result= tempdata.sort((a,b)=>b.firstname.localeCompare(a.firstname));
+    let result= tempdata.sort((a,b)=>b.firstname.concat(b.surname).localeCompare(a.firstname.concat(a.surname)));
     setfilterusers(result);
     }
    }
